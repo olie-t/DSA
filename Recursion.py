@@ -19,9 +19,26 @@ def even_nums(num_array: list):
         return even_num
     if num_array[0] % 2 == 0:
         even_num.append(num_array[0])
-        return even_num, even_nums(num_array[1:])
+        return even_num + even_nums(num_array[1:])
     else:
         return even_nums(num_array[1:])
 
 test_nums = [1, 2, 3, 4, 5, 6, 7, 8]
 print(even_nums(test_nums))
+
+def triangle_numbers(num: int):
+    if num == 1:
+        return 1
+    return triangle_numbers(num - 1) + num
+
+print(triangle_numbers(8))
+
+def letter_find(string: str):
+    idx = 0
+    if string[0] == 'x':
+        return idx
+    else:
+        idx += 1
+    return letter_find(string[1:]) + idx
+
+print(letter_find("abctrfht"))
