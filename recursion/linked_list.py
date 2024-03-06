@@ -1,8 +1,8 @@
 class Node:
-    def __init__(self, data: any, next_node: any = None, previous_node: any = None):
+    def __init__(self, data: any, next_node: any = None):
         self.data = data
         self.next_node = next_node
-        self.previous_node = previous_node
+
 
 
 class LinkedList:
@@ -21,6 +21,7 @@ class LinkedList:
                 return current_node.data
             elif current_node.next_node is None:
                 return None
+
     def index_of(self, value: any):
         current_index = 0
         current_node = self.head
@@ -58,6 +59,31 @@ class LinkedList:
         node_after_deletion = current_node.next_node.next_node
         current_node.next_node = node_after_deletion
 
+    def print_all(self):
+        current_node = self.head
+        while current_node.next_node:
+            print(current_node.data)
+            current_node = current_node.next_node
+
+    def return_last(self):
+        current_node = self.head
+        while current_node.next_node:
+            current_node = current_node.next_node
+        return current_node.data
+
+    def reverse_list(self):
+        current_node = self.head
+        previous_node = None
+        while current_node:
+            next_node = current_node.next_node
+            current_node.next_node = previous_node
+            previous_node = current_node
+            current_node = next_node
+            #print(f"prev - {previous_node.data} cur -  {current_node.data} next -  {next_node.data}")
+        self.head = previous_node
+
+
+
 
 if __name__ == "__main__":
     node1 = Node(data="Once")
@@ -70,10 +96,14 @@ if __name__ == "__main__":
     node3.next_node = node4
 
     linked_list = LinkedList(node1)
-    print(linked_list.read(2))
-    print(linked_list.read(6))
-    print(linked_list.index_of("A"))
-    linked_list.insert_at_index("Test", 2)
-    print(linked_list.read(2), linked_list.read(3))
-    linked_list.delete_at_index(2)
-    print(linked_list.read(0), linked_list.read(1), linked_list.read(2), linked_list.read(3), linked_list.read(5))
+    #print(linked_list.read(2))
+    #print(linked_list.read(6))
+    #print(linked_list.index_of("A"))
+    #linked_list.insert_at_index("Test", 2)
+    #print(linked_list.read(2), linked_list.read(3))
+    #linked_list.delete_at_index(2)
+    #print(linked_list.read(0), linked_list.read(1), linked_list.read(2), linked_list.read(3), linked_list.read(5))
+    linked_list.print_all()
+    print(linked_list.return_last())
+    linked_list.reverse_list()
+    linked_list.print_all()
