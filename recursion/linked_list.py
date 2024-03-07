@@ -61,7 +61,7 @@ class LinkedList:
 
     def print_all(self):
         current_node = self.head
-        while current_node.next_node:
+        while current_node:
             print(current_node.data)
             current_node = current_node.next_node
 
