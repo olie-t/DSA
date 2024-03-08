@@ -5,7 +5,7 @@ class TreeNode:
         self.rightChild = right
 
 
-def search(search_value:int, node: TreeNode):
+def search(search_value: int, node: TreeNode):
     if node is None or node.value == search_value:
         return node
     elif search_value < node.value:
@@ -55,7 +55,6 @@ def lift(node: TreeNode, node_to_delete: TreeNode):
         return node.rightChild
 
 
-
 if __name__ == "__main__":
     node1 = TreeNode(25)
     node2 = TreeNode(75)
@@ -65,5 +64,3 @@ if __name__ == "__main__":
     print(search(100, root))
     delete(100, root)
     print(search(100, root))
-
-
