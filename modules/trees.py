@@ -54,6 +54,23 @@ def lift(node: TreeNode, node_to_delete: TreeNode):
         node_to_delete.value = node.value
         return node.rightChild
 
+def traverse_and_print(node: TreeNode):
+    if node is None:
+        return
+    traverse_and_print(node.leftChild)
+    print(node.value)
+    traverse_and_print(node.rightChild)
+
+
+def find_highest(node: TreeNode) -> int:
+    if node.rightChild:
+        return find_highest(node.rightChild)
+    else:
+        return node.value
+
+
+
+
 
 if __name__ == "__main__":
     node1 = TreeNode(25)
@@ -64,3 +81,7 @@ if __name__ == "__main__":
     print(search(100, root))
     delete(100, root)
     print(search(100, root))
+    for i in range(0, 100, 5):
+        insert(i, root)
+    #traverse_and_print(root)
+    print(find_highest(root))
