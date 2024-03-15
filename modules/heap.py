@@ -63,7 +63,7 @@ class Heap:
             trickle_node_index = larger_child_index
 
         return value_to_delete
-    
+
 
 
 
