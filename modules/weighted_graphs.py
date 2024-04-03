@@ -8,78 +8,54 @@ class City:
 
 
 def dijkstra_shortest_path(start_city: City, final_destination: City) -> list:
-    cheapest_prices_table = {start_city.name: 0}
+    # Initialize the cheapest prices table with the start city at a cost of 0.
+    cheapest_prices_table = {start_city: 0}
+    # Initialize a table to keep track of the cheapest path's previous city.
     cheapest_previous_stopover_table = {}
+    # All cities initially unvisited; start with just the start city known.
+    unvisited_cities = {start_city}
+    # Keep track of visited cities to avoid revisiting.
+    visited_cities = set()
 
-    unvisited_cities = [start_city.name]  # Initialize with the start city
+    # The current city starts as the start city.
+    current_city = start_city
 
-    visited_cities = {}
+    while current_city:
+        # Mark the current city as visited.
+        visited_cities.add(current_city)
+        unvisited_cities.remove(current_city)
 
-    while unvisited_cities:
-        # Find the city in unvisited_cities with the lowest tentative distance
-        current_city_name = min(
-            unvisited_cities,
-            key=lambda city: cheapest_prices_table.get(city, float("inf")),
-        )
-        current_city = next(
-            (
-                c
-                for c in [start_city, birmingham, falmouth, truro]
-                if c.name == current_city_name
-            ),
-            None,
-        )
-
-        if (
-            current_city is None
-        ):  # Break if no current city is found (should not happen in correct usage)
-            break
-
-        visited_cities[current_city.name] = True
-        unvisited_cities.remove(current_city.name)
-
-        for city, price in current_city.routes.items():
-            if city.name not in visited_cities:
-                if city.name not in unvisited_cities:
-                    unvisited_cities.append(city.name)
-                price_through_current_city = (
-                    cheapest_prices_table[current_city.name] + price
-                )
+        # Update distances to each adjacent city.
+        for adjacent_city, price in current_city.routes.items():
+            if adjacent_city not in visited_cities:
+                unvisited_cities.add(adjacent_city)
+                new_price = cheapest_prices_table[current_city] + price
                 if (
-                    city.name not in cheapest_prices_table
-                    or price_through_current_city < cheapest_prices_table[city.name]
+                    adjacent_city not in cheapest_prices_table
+                    or new_price < cheapest_prices_table[adjacent_city]
                 ):
-                    cheapest_prices_table[city.name] = price_through_current_city
-                    cheapest_previous_stopover_table[city.name] = current_city.name
+                    cheapest_prices_table[adjacent_city] = new_price
+                    cheapest_previous_stopover_table[adjacent_city] = current_city
 
-        # Break the loop if there are no unvisited cities left
-        if not unvisited_cities:
+        # Select the next city: the unvisited city with the lowest tentative distance.
+        current_city = None
+        lowest_price = float("inf")
+        for city in unvisited_cities:
+            if cheapest_prices_table[city] < lowest_price:
+                lowest_price = cheapest_prices_table[city]
+                current_city = city
+
+        # Break the loop if no unvisited cities are left or if the final destination is reached.
+        if current_city == final_destination or not current_city:
             break
 
-        # Prevent the loop from trying to select a new current city if unvisited_cities is empty
-        current_city = (
-            None
-            if not unvisited_cities
-            else min(
-                unvisited_cities,
-                key=lambda city: cheapest_prices_table.get(city, float("inf")),
-            )
-        )
-
-    # Reconstruct the shortest path from the cheapest_previous_stopover_table
+    # Reconstruct and return the shortest path using the previous stopover table.
     shortest_path = []
-    current_city_name = final_destination.name
+    while final_destination:
+        shortest_path.append(final_destination.name)
+        final_destination = cheapest_previous_stopover_table.get(final_destination)
 
-    while current_city_name != start_city.name:
-        shortest_path.append(current_city_name)
-        current_city_name = cheapest_previous_stopover_table.get(current_city_name)
-        if current_city_name is None:  # If a path doesn't exist
-            return []
-
-    shortest_path.append(start_city.name)
-    shortest_path.reverse()
-
-    return shortest_path
+    return shortest_path[::-1]  # Return the reversed path, from start to destination.
 
 
 if __name__ == "__main__":
