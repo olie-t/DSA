@@ -24,7 +24,7 @@ def dijkstra_shortest_path(start_city: City, final_destination: City) -> list:
         unvisited_cities.remove(current_city)
 
         for city in current_city.routes:
-            if city
+            if city not in visited_cities[name]
 
 
 if __name__ == "__main__":
