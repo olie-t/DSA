@@ -81,9 +81,70 @@ def highest_product(nums: list) -> int:
 ints = [5, -10, -6, 9, 4]
 more_ints = [3, 6, 10, -7, 12, -3]
 
+
+def int_in_sequence(nums: list) -> int:
+    # return the length of the longest sequence of ints
+    nums_hash = {}
+    longest_sequence = 0
+    for num in nums:
+        if num not in nums_hash:
+            nums_hash[num] = True
+    for num in nums_hash.keys():
+        if num - 1 not in nums_hash:
+            current_num = num
+            current_sequence = 1
+
+            while current_num + 1 in nums_hash:
+                current_num += 1
+                current_sequence += 1
+            longest_sequence = max(longest_sequence, current_sequence)
+    return longest_sequence
+
+
+test_seq = [10, 5, 12, 3, 55, 30, 4, 11, 2]
+test_seq2 = [19, 13, 15, 12, 18, 14, 17, 11]
+
+
+def sort_temperatures(temps: list[float]) -> list[float]:
+    temps_hash = {}
+    for temp in temps:
+        if temp not in temps_hash:
+            temps_hash[temp] = 1
+        else:
+            temps_hash[temp] += 1
+    sorted_array = []
+    for temperature in range(970, 991):
+        temp_float = temperature / 10.0
+        if temp_float in temps_hash:
+            sorted_array.extend([temp_float] * temps_hash[temp_float])
+    return sorted_array
+
+
+temps = [
+    97.0,
+    97.1,
+    98.6,
+    98.1,
+    97.3,
+    99.0,
+    98.5,
+    98.5,
+    97.1,
+    97.5,
+    97.4,
+    98.3,
+    98.3,
+    97.1,
+    98.9,
+]
+
+
 if __name__ == "__main__":
     print(plays_both(basketball_players, football_players))
     print(find_missing_int(numbers))
     print(stock_trader(prices))
     print(highest_product(ints))
     print(highest_product(more_ints))
+    print(int_in_sequence(test_seq))
+    print(int_in_sequence(test_seq2))
+    print(sort_temperatures(temps))
